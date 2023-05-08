@@ -12,7 +12,7 @@
 #' @param type A string
 #' @param beta A string
 #' 
-#' @return A dataframe with recipe names
+#' @return A dataframe with recipe names and urls
 #' 
 #' @export
 #' 
