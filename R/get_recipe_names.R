@@ -85,7 +85,7 @@ get_recipe_names <- function (q, app_id = "9f80d298", app_key = "e12319d6fd3db51
   recipe_hits <- recipe_hits$recipe
   
   recipe_list <- recipe_hits |> 
-    select(label, url)
+    dplyr::select(label, url)
   
   return(recipe_list)
   
