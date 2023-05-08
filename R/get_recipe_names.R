@@ -24,6 +24,18 @@ get_recipe_names <- function (q, app_id = "9f80d298", app_key = "e12319d6fd3db51
                                mealType = "", dishType = "", type = "public", 
                                beta = "false", public = "true") {
   
+  stopifnot(is.character(q))
+  stopifnot(is.character(app_id))
+  stopifnot(is.character(app_key))
+  stopifnot(is.character(diet))
+  stopifnot(is.character(health))
+  stopifnot(is.character(cuisineType))
+  stopifnot(is.character(mealType))
+  stopifnot(is.character(dishType))
+  stopifnot(is.character(type))
+  stopifnot(is.character(beta))
+  stopifnot(is.character(public))
+  
   url_start <- "https://api.edamam.com/api/recipes/v2?"
  
   if(health != ""){
