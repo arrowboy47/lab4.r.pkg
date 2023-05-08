@@ -78,6 +78,7 @@ get_recipe_names <- function (q, app_id = "9f80d298", app_key = "e12319d6fd3db51
   rawJSON <- httr::GET(url)
   
   JSON_list <- jsonlite::fromJSON(rawToChar(rawJSON$content))
+  JSON_list <- jsonlite::fromJSON(rawToChar(rawJSON$content))
   
   # return(recipe_list)
   
