@@ -68,6 +68,4 @@ get_sidedish <- function(main_course_id, q = NULL, app_id = "6f567a3a", app_key 
   }
 }
 
-# Example usage
-main_course_id <- "343176318943d0a5062f5a8f2e851485"
-recipe_88df <- get_sidedish(main_course_id)
+
