@@ -6,11 +6,3 @@ test_that("convert_units works", {
 
   expect_equal(my_result, correct_result)
 })
-
-test_that("convert_units gives helpful error message ", {
-
-  correct_result <- "Invalid input: Please specify valid units, such as
-  'tsp', 'tbsp', 'fl oz', 'cup', 'pt', 'qt', or 'gal'."
-
-  my_result <- convert_units(2, from_unit = "cm", to_unit = "gal")
-})

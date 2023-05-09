@@ -6,6 +6,7 @@
 #'
 #' @return string with new amount and unit of measurement.
 #'
+#' @export
 
 convert_units <- function(amount, from_unit, to_unit) {
   # Define a lookup table for unit conversion factors relative to teaspoons
