@@ -6,9 +6,11 @@
 #'
 #' @return string with new amount and unit of measurement.
 #'
+#' @export
 
 convert_units <- function(amount, from_unit, to_unit) {
   # Define a lookup table for unit conversion factors relative to teaspoons
+  # used chatgpt for assistance
   conversion_factors <- data.frame(
     unit = c("tsp", "tbsp", "fl oz", "cup", "pt", "qt", "gal"),
     factor = c(1, 3, 6, 48, 96, 192, 768)
@@ -27,6 +29,6 @@ convert_units <- function(amount, from_unit, to_unit) {
   }
 
   else {
-    stop("Invalid input: Please specify valid units, such as 'tsp', 'tbsp', 'fl oz', 'cup', 'pt', 'qt', or 'gal'.")
+    stop("Invalid input! Valid Inputs: 'tsp', 'tbsp', 'fl oz', 'cup', 'pt', 'qt', or 'gal'.")
   }
 }
