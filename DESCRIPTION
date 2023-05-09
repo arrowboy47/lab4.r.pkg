@@ -1,13 +1,12 @@
 Package: edamamore
-Title: Helps users of the website "Edamam" find recipes and adjust them to their liking.
+Title: R Interface to the Edamam Recipe API
 Version: 0.0.0.9000
 Authors@R: 
-    person("Shreya", "Ravilla", "shreya.ravilla248", role = c("aut", "cre")),
-    person("Aiden", "Kelly", "aqkelly@calpoly.edu", role = c("aut", "cre")),
-    person("Josh", "Rowe", "jsrowe@calpoly.edu", role = c("aut", "cre"))
-Description: A few functions made to interface with the edamam API
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Shreya", "Ravilla", email = "shreya.ravilla248", role = c("aut", "cre")),
+    person("Aiden", "Kelly", email = "aqkelly@calpoly.edu", role = c("aut", "cre")),
+    person("Josh", "Rowe", email = "jsrowe@calpoly.edu", role = c("aut", "cre"))
+Description: The edamamore package provides a set of functions to access and query the Edamam Recipe API, allowing users to search for recipes, filter by various criteria, and adjust the recipe ingredients and quantities to their liking. The package is designed to simplify the process of finding and customizing recipes for different dietary needs and preferences.
+License: What license it uses
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
