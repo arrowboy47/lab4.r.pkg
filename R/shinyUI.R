@@ -11,57 +11,89 @@
 #' 
 
 shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7c250") {
-
-  
-  # Define UI for application
-  ui <- fluidPage(
-    
-    # Application title
-    titlePanel("EdaMeal"),
-    
-    # Sidebar layout with input and output definitions
-    sidebarLayout(
+    # Define server logic for random text generation
+    server <- function(input, output) {
       
-      # Sidebar panel for inputs
-      sidebarPanel(
-        
-        # Text input prompt
-        textInput("text", "Enter text:"),
-        
-        # Checkbox input for yes/no
-        checkboxInput("checkbox", "Yes or No", value = FALSE)
-      ),
+      # Main course 
       
-      # Main panel for displaying outputs
-      mainPanel(
+      mainquery <- reactive({ input$maindish })
+      
+      maindf <- reactiveVal()  # Initialize a reactive value for maindf
+      
+      observeEvent(mainquery(), {
+        # helperfunciton1 notes
+        # 3 parameters: 1. string that has name of main course u search for 2. app_id 3. app_key
+        # return a df containing a column of api request links (col called "uri"), a string of ingredients(col name "ingredientLines"), link to recipes(col name is "url"), name of dishs (col name "label"),image urls(col name is "image") 
+        maindf(helperfunction1(mainquery(), app_id, app_key))  # Update maindf when mainquery changes
+      })
+      
+      maincourse <- reactive({ maindf()[1,] })  # Make maincourse reactive
+      
+      output$output1 <- renderUI({
+        # Some processing here...
+        tagList(
+          h2(maincourse()$label),
+          img(src = maincourse()$image, height = 200, width = 200),
+          h3("Ingredients"),
+          HTML(paste(maincourse()$ingredientLines, collapse = "<br>")),  # Display ingredients as HTML
+          a("Click here for the recipe", href = maincourse()$url)
+        )
+      })
+      
+      
+      # Side dish 
+      output$output2 <- renderTable({
+        idobj <- maincourse()$uri
+        idobj <- 
+        if (input$"SDinput") {
+          side <- lab4.r.pkg::get_sidedish(main_course_id = idobj, app_id, app_key)
+          side <- side[, c("label", "url")]
+          return(side)
+        } else {
+          # If Side Dish is FALSE, return NULL to display no table
+          return(NULL)
+        }
+      })
+      
+      
+      # nutrients
+      output$output3 <- renderUI({
+        # Some processing here...
+      })
+    }
+    
+    # Define UI for application
+    ui <- fluidPage(
+      
+      # Application title
+      titlePanel("EdaMeal"),
+      
+      # Sidebar layout with input and output definitions
+      sidebarLayout(
         
-        # Output panels
-        textOutput("output1"),
-        textOutput("output2"),
-        textOutput("output3")
+        # Sidebar panel for inputs
+        sidebarPanel(
+          
+          # Text input prompt
+          textInput("maindish", "Search for a Main Course:"),
+          
+          # Checkbox input for yes/no
+          checkboxInput("SDinput", "Include a Side Dish?", value = FALSE)
+        ),
+        
+        # Main panel for displaying outputs
+        mainPanel(
+          
+          # Output panels
+          uiOutput("output1"),
+          tableOutput("output2"),
+          uiOutput("output3"),
+        )
       )
     )
-  )
-  
-  # Define server logic for random text generation
-  server <- function(input, output) {
     
-    # You can define the output for each panel here
-    # For example:
-    output$output1 <- renderText({
-      # Some processing here...
-    })
+    # Run the application 
+    return(shinyApp(ui = ui, server = server))
     
-    output$output2 <- renderText({
-      # Some processing here...
-    })
-    
-    output$output3 <- renderText({
-      # Some processing here...
-    })
   }
   
-  # Run the application 
-  return(shinyApp(ui = ui, server = server))
-  
-}
