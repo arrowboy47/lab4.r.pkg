@@ -11,7 +11,6 @@
 #' 
 
 
-
 get_sidedish <- function(main_course_id, q = NULL, app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7c250") {
   base_url <- "https://api.edamam.com/search"
   main_url <- "https://api.edamam.com/api/recipes/v2"
