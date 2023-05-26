@@ -103,7 +103,8 @@ get_nutrition_facts <- function (q, app_id = "1690fc80", app_key =
   
   JSON_nutrients <- JSON_recipe$totalNutrients
   
-  result <- data.frame('url' = JSON_recipe$url,
+  results <- data.frame('url' = JSON_recipe$url,
+                        'uri' = JSON_recipe$uri,
                        'recipe' = JSON_recipe$label,
                        'Energy kcal' = JSON_nutrients$ENERC_KCAL$quantity,
                        'Fat g' =  JSON_nutrients$FAT$quantity,

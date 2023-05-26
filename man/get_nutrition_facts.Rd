@@ -6,8 +6,8 @@
 \usage{
 get_nutrition_facts(
   q,
-  app_id = "9f80d298",
-  app_key = "e12319d6fd3db51d5a389c6336431579",
+  app_id = "1690fc80",
+  app_key = "ea4faf1611e1ec77faf0b15cebc7356a",
   diet = "balanced",
   health = "",
   cuisineType = "",
