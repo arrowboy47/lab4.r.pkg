@@ -24,7 +24,7 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
         # helperfunciton1 notes
         # 3 parameters: 1. string that has name of main course u search for 2. app_id 3. app_key
         # return a df containing a column of api request links (col called "uri"), a string of ingredients(col name "ingredientLines"), link to recipes(col name is "url"), name of dishs (col name "label"),image urls(col name is "image") 
-        maindf(helperfunction1(mainquery(), app_id, app_key))  # Update maindf when mainquery changes
+        maindf(get_recipe_info(mainquery(), app_id, app_key))  # Update maindf when mainquery changes
       })
       
       maincourse <- reactive({ maindf()[1,] })  # Make maincourse reactive
