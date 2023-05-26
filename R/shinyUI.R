@@ -44,9 +44,13 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
       # Side dish 
       output$output2 <- renderTable({
         idobj <- maincourse()$uri
-        idobj <- 
+        # Find the position of the '_' character
+        underscore_position <- str_locate(idobj, "_")[1, 1]
+        
+        # Extract the substring from the '_' character to the end of the string
+        theident <- str_sub(idobj, start = underscore_position)
         if (input$"SDinput") {
-          side <- lab4.r.pkg::get_sidedish(main_course_id = idobj, app_id, app_key)
+          side <- lab4.r.pkg::get_sidedish(main_course_id = theident, app_id, app_key)
           side <- side[, c("label", "url")]
           return(side)
         } else {
