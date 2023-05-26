@@ -2,14 +2,12 @@
     
     my_result <- get_nutrition_facts(q = "Oatmeal")
     
-    expect_equal(names(my_result), c( "ENERC_KCAL", "FAT", "FASAT", "FATRN", "FAMS",
-                                      "FAPU", "CHOCDF", "CHOCDF.net", "FIBTG", 
-                                      "SUGAR", "SUGAR.added", "PROCNT", "CHOLE",
-                                      "NA", "CA", "MG", "K", "FE", "ZN", "P", 
-                                      "VITA_RAE", "VITC", "THIA", "RIBF", "NIA",
-                                      "VITB6A", "FOLDFE", "FOLFD", "FOLAC",
-                                      "VITB12", "VITD",  "TOCPHA", "VITK1",
-                                      "Sugar.alcohol", "WATER"))
+    expect_equal(names(my_result), c( "url", "recipe", "Energy.kcal",
+                                      "Fat.g", "Saturated.Fat.g", "Trans.Fat.g",
+                                      "Monounsaturated.Fat.g", "Polyunsaturated.Fat.g",
+                                      "Net.Carbs.g", "Fiber.g", "Sugar.g", "Protein.g",
+                                      "Cholesterol.mg", "Sodium.mg", "Calcium.mg",
+                                      "Magnesium.mg", "Potassium.mg", "Iron.mg"))
     
     expect_s3_class(my_result, "data.frame")
     
