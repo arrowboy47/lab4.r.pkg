@@ -14,6 +14,7 @@
 #'
 
 shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7c250") {
+  
   # Define server logic for random text generation
   server <- function(input, output) {
 
@@ -104,7 +105,9 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
 
 
 
+
   # Define UI for application
+
   ui <- fluidPage(
 
     # Application title
