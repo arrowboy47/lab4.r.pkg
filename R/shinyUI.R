@@ -50,6 +50,7 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
         # Find the position of the '_' character
         underscore_position <- stringr::str_locate(idobj, "_")[1, 1]
 
+        
         # Extract the substring from the '_' character to the end of the string
         theident <- stringr::str_sub(idobj, start = underscore_position)
         if (input$"SDinput") {
@@ -66,6 +67,7 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
       # nutrients
       output$output3 <- renderPlot({
 
+
         meal <- maincourse()$label
 
 
@@ -79,6 +81,7 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
             dplyr::mutate(Nutrient = forcats::fct_reorder(Nutrient, Value)) |>
             ggplot2::ggplot(nutrition_data, aes(x = Nutrient, y = Value)) +
             ggplot2::geom_segment(ggplot2::aes(x = Nutrient, xend = Nutrient,
+
                              y = Value, yend = 0),
                          color = "seagreen", alpha = 0.6) +
             ggplot2::geom_point(color = "#006D5B",
