@@ -6,6 +6,8 @@
 #' @return shiny app
 #' 
 #' @import shiny
+#' @import ggplot2
+#' @import dplyr
 #' 
 #' @export
 #' 
@@ -45,10 +47,10 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
       output$output2 <- renderTable({
         idobj <- maincourse()$uri
         # Find the position of the '_' character
-        underscore_position <- str_locate(idobj, "_")[1, 1]
+        underscore_position <- stringr::str_locate(idobj, "_")[1, 1]
         
         # Extract the substring from the '_' character to the end of the string
-        theident <- str_sub(idobj, start = underscore_position)
+        theident <- stringr::str_sub(idobj, start = underscore_position)
         if (input$"SDinput") {
           side <- lab4.r.pkg::get_sidedish(main_course_id = theident, app_id, app_key)
           side <- side[, c("label", "url")]
@@ -64,15 +66,14 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
       output$output3 <- renderPlot({
         # Some processing here...
         dish <- input$maindish
-        
+
         if (dish != "") {
           nutrition_data <- get_nutrition_facts(dish)
-          plot_data <- nutrition_data |>
-            filter(recipe == dish) |>
-            pivot_longer(cols = Energy.kcal:Iron.mg,
+          plot_data <- nutrition_data[1,] |>
+            tidyr::pivot_longer(cols = Energy.kcal:Iron.mg,
                          names_to = "Nutrient",
                          values_to = "Value") |>
-            mutate(Nutrient = fct_reorder(Nutrient, Value)) |>
+            mutate(Nutrient = forcats::fct_reorder(Nutrient, Value)) |>
             ggplot(aes(x = Nutrient, y = Value)) +
             geom_segment(aes(x = Nutrient, xend = Nutrient,
                              y = Value, yend = 0),
