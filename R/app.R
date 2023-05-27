@@ -62,7 +62,33 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
       
       # nutrients
       output$output3 <- renderUI({
-        # Some processing here...
+          # Some processing here...
+          dish <- input$maindish
+          
+          if (dish != "") {
+            nutrition_data <- get_nutrition_facts(dish)
+            plot_data <- nutrition_data |>
+              filter(recipe == dish) |>
+              pivot_longer(cols = Energy.kcal:Iron.mg,
+                           names_to = "Nutrient",
+                           values_to = "Value") |>
+              mutate(Nutrient = fct_reorder(Nutrient, Value)) |>
+              ggplot(aes(x = Nutrient, y = Value)) +
+              geom_segment(aes(x = Nutrient, xend = Nutrient,
+                               y = Value, yend = 0),
+                           color = "seagreen", alpha = 0.6) +
+              geom_point(color = "#006D5B",
+                         size = 4,
+                         alpha = 1) +
+              theme_bw() +
+              theme_minimal() +
+              coord_flip() +
+              labs(x = "",
+                   y = "Quantity",
+                   title = "Quantity of Each Nutrient",
+                   subtitle = "Nutrient")
+            
+          }
       })
     }
     
