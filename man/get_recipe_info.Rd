@@ -7,7 +7,15 @@
 get_recipe_info(
   q,
   app_id = "1690fc80",
-  app_key = "ea4faf1611e1ec77faf0b15cebc7356a"
+  app_key = "ea4faf1611e1ec77faf0b15cebc7356a",
+  diet = "balanced",
+  health = "",
+  cuisineType = "",
+  mealType = "",
+  dishType = "",
+  type = "public",
+  beta = "false",
+  public = "true"
 )
 }
 \arguments{
