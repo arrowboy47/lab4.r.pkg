@@ -14,92 +14,91 @@
 #'
 
 shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7c250") {
-    # Define server logic for random text generation
-    server <- function(input, output) {
+  
+  # Define server logic for random text generation
+  server <- function(input, output) {
 
-      # Main course
+    # Main course
 
-      mainquery <- reactive({ input$maindish })
+    mainquery <- reactive({ input$maindish })
 
-      maindf <- reactiveVal()  # Initialize a reactive value for maindf
+    maindf <- reactiveVal()  # Initialize a reactive value for maindf
 
-      observeEvent(mainquery(), {
-        # helperfunciton1 notes
-        # 3 parameters: 1. string that has name of main course u search for 2. app_id 3. app_key
-        # return a df containing a column of api request links (col called "uri"), a string of ingredients(col name "ingredientLines"), link to recipes(col name is "url"), name of dishs (col name "label"),image urls(col name is "image")
-        maindf(get_recipe_info(mainquery(), app_id, app_key))  # Update maindf when mainquery changes
-      })
+    observeEvent(mainquery(), {
+      # helperfunciton1 notes
+      # 3 parameters: 1. string that has name of main course u search for 2. app_id 3. app_key
+      # return a df containing a column of api request links (col called "uri"), a string of ingredients(col name "ingredientLines"), link to recipes(col name is "url"), name of dishs (col name "label"),image urls(col name is "image")
+      maindf(get_recipe_info(mainquery(), app_id, app_key))  # Update maindf when mainquery changes
+    })
 
-      maincourse <- reactive({ maindf()[1,] })  # Make maincourse reactive
+    maincourse <- reactive({ maindf()[1,] })  # Make maincourse reactive
 
-      output$output1 <- renderUI({
-        # Some processing here...
-        tagList(
-          h2(maincourse()$label),
-          img(src = maincourse()$image, height = 200, width = 200),
-          h3("Ingredients"),
-          HTML(paste(maincourse()$ingredientLines, collapse = "<br>")),  # Display ingredients as HTML
-          a("Click here for the recipe", href = maincourse()$url)
-        )
-      })
-
-
-      # Side dish
-      output$output2 <- renderTable({
-        idobj <- maincourse()$uri
-        # Find the position of the '_' character
-        underscore_position <- stringr::str_locate(idobj, "_")[1, 1]
-
-        
-        # Extract the substring from the '_' character to the end of the string
-        theident <- stringr::str_sub(idobj, start = underscore_position)
-        if (input$"SDinput") {
-          side <- lab4.r.pkg::get_sidedish(main_course_id = theident, app_id, app_key)
-          side <- side[, c("label", "url")]
-          return(side)
-        } else {
-          # If Side Dish is FALSE, return NULL to display no table
-          return(NULL)
-        }
-      })
+    output$output1 <- renderUI({
+      # Some processing here...
+      tagList(
+        h2(maincourse()$label),
+        img(src = maincourse()$image, height = 200, width = 200),
+        h3("Ingredients"),
+        HTML(paste(maincourse()$ingredientLines, collapse = "<br>")),  # Display ingredients as HTML
+        a("Click here for the recipe", href = maincourse()$url)
+      )
+    })
 
 
-      # nutrients
-      output$output3 <- renderPlot({
+    # Side dish
+    output$output2 <- renderTable({
+      idobj <- maincourse()$uri
+      # Find the position of the '_' character
+      underscore_position <- stringr::str_locate(idobj, "_")[1, 1]
 
-
-        meal <- maincourse()$label
-
-
-        dish <- input$maindish()
-
-          nutrition_data <- edamamore::get_nutrition_facts(dish) |>
-            filter(recipe == meal) |>
-            tidyr::pivot_longer(cols = Energy.kcal:Iron.mg,
-                         names_to = "Nutrient",
-                         values_to = "Value") |>
-            dplyr::mutate(Nutrient = forcats::fct_reorder(Nutrient, Value)) |>
-            ggplot2::ggplot(nutrition_data, aes(x = Nutrient, y = Value)) +
-            ggplot2::geom_segment(ggplot2::aes(x = Nutrient, xend = Nutrient,
-
-                             y = Value, yend = 0),
-                         color = "seagreen", alpha = 0.6) +
-            ggplot2::geom_point(color = "#006D5B",
-                       size = 4,
-                       alpha = 1) +
-            ggplot2::theme_bw() +
-            ggplot2::theme_minimal() +
-            ggplot2::coord_flip() +
-            ggplot2::labs(x = "",
-                          y = "Quantity",
-                          title = "Quantity of Each Nutrient",
-                          subtitle = "Nutrient")
-
-      })
-
-
-
+      # Extract the substring from the '_' character to the end of the string
+      theident <- stringr::str_sub(idobj, start = underscore_position)
+      if (input$"SDinput") {
+        side <- lab4.r.pkg::get_sidedish(main_course_id = theident, app_id, app_key)
+        side <- side[, c("label", "url")]
+        return(side)
+      } else {
+        # If Side Dish is FALSE, return NULL to display no table
+        return(NULL)
       }
+    })
+
+
+    # nutrients
+    output$output3 <- renderPlot({
+
+      meal <- maincourse()$label
+
+
+      dish <- input$maindish()
+
+      nutrition_data <- edamamore::get_nutrition_facts(dish) |>
+        filter(recipe == meal) |>
+        tidyr::pivot_longer(cols = Energy.kcal:Iron.mg,
+                            names_to = "Nutrient",
+                            values_to = "Value") |>
+        dplyr::mutate(Nutrient = forcats::fct_reorder(Nutrient, Value)) |>
+        ggplot2::ggplot(nutrition_data, aes(x = Nutrient, y = Value)) +
+        ggplot2::geom_segment(ggplot2::aes(x = Nutrient, xend = Nutrient,
+                                           y = Value, yend = 0),
+                              color = "seagreen", alpha = 0.6) +
+        ggplot2::geom_point(color = "#006D5B",
+                            size = 4,
+                            alpha = 1) +
+        ggplot2::theme_bw() +
+        ggplot2::theme_minimal() +
+        ggplot2::coord_flip() +
+        ggplot2::labs(x = "",
+                      y = "Quantity",
+                      title = "Quantity of Each Nutrient",
+                      subtitle = "Nutrient")
+
+    })
+
+
+
+  }
+
 
 
 
@@ -108,36 +107,37 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
 
 
   # Define UI for application
-    ui <- fluidPage(
 
-      # Application title
-      titlePanel("EdaMeal"),
+  ui <- fluidPage(
 
-      # Sidebar layout with input and output definitions
-      sidebarLayout(
+    # Application title
+    titlePanel("EdaMeal"),
 
-        # Sidebar panel for inputs
-        sidebarPanel(
+    # Sidebar layout with input and output definitions
+    sidebarLayout(
 
-          # Text input prompt
-          textInput("maindish", "Search for a Main Course:"),
+      # Sidebar panel for inputs
+      sidebarPanel(
 
-          # Checkbox input for yes/no
-          checkboxInput("SDinput", "Include a Side Dish?", value = FALSE)
-        ),
+        # Text input prompt
+        textInput("maindish", "Search for a Main Course:"),
 
-        # Main panel for displaying outputs
-        mainPanel(
+        # Checkbox input for yes/no
+        checkboxInput("SDinput", "Include a Side Dish?", value = FALSE)
+      ),
 
-          # Output panels
-          uiOutput("output1"),
-          tableOutput("output2"),
-          plotOutput("output$output3")
-        )
+      # Main panel for displaying outputs
+      mainPanel(
+
+        # Output panels
+        uiOutput("output1"),
+        tableOutput("output2"),
+        plotOutput("output$output3")
       )
     )
+  )
 
-    # Run the application
-    return(shinyApp(ui = ui, server = server))
+  # Run the application
+  return(shinyApp(ui = ui, server = server))
 
-  }
+}
