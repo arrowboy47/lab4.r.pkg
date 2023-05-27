@@ -32,13 +32,12 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
       maincourse <- reactive({ maindf()[1,] })  # Make maincourse reactive
       
       output$output1 <- renderUI({
-        # Some processing here...
         tagList(
           h2(maincourse()$label),
           img(src = maincourse()$image, height = 200, width = 200),
           h3("Ingredients"),
-          HTML(paste(maincourse()$ingredientLines, collapse = "<br>")),  # Display ingredients as HTML
-          a("Click here for the recipe", href = maincourse()$url)
+          HTML(paste(maincourse()$ingredients, collapse = "<br>")),  # Display ingredients as HTML
+          a("\n Click here for the recipe", href = maincourse()$url)
         )
       })
       
@@ -46,13 +45,15 @@ shinyUI <- function(app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7
       # Side dish 
       output$output2 <- renderTable({
         idobj <- maincourse()$uri
+        print(idobj)
         # Find the position of the '_' character
-        underscore_position <- stringr::str_locate(idobj, "_")[1, 1]
+        underscore_position <- stringr::str_locate(idobj, "recipe_")[1, 2]
         
         # Extract the substring from the '_' character to the end of the string
-        theident <- stringr::str_sub(idobj, start = underscore_position)
+        theident <- stringr::str_sub(idobj, start = underscore_position +1 )
+        print(theident)
         if (input$"SDinput") {
-          side <- lab4.r.pkg::get_sidedish(main_course_id = theident, app_id, app_key)
+          side <- lab4.r.pkg::get_sidedish(q = input$maindish(), app_id, app_key)
           side <- side[, c("label", "url")]
           return(side)
         } else {

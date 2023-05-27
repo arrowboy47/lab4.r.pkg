@@ -11,13 +11,20 @@
 #' 
 
 
-get_sidedish <- function(main_course_id, q = NULL, app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7c250") {
+get_sidedish <- function(main_course_id = NULL, q = NULL, app_id = "6f567a3a", app_key = "aec97451eec00326ae7fedab93b7c250") {
   base_url <- "https://api.edamam.com/search"
   main_url <- "https://api.edamam.com/api/recipes/v2"
   
-  # Fetch the main course recipe details
-  main_course_request_url <- paste0(main_url, '/', main_course_id,
-                                    "?type=public&app_id=", app_id, "&app_key=", app_key)
+  if(!is.null(main_course_id)){
+    # Fetch the main course recipe details
+    main_course_request_url <- paste0(main_url, '/', main_course_id,
+                                      "?type=public&app_id=", app_id, "&app_key=", app_key)
+  }else{
+    main_course_request_url <- paste0(main_url, '?type=public&q=', q,
+                                      "&app_id=", app_id, "&app_key=", app_key)
+    
+  }
+
   main_course_response <- httr::GET(main_course_request_url)
   
   # Check if the main course request was successful
